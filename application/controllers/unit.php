@@ -18,7 +18,7 @@ class Unit extends CI_Controller
 		if($this->session->userdata('is_logged_in'))
 		{
 		         $this->load->model('Admin_umodel'); 
-                        $email=$this->session->userdata['is_logged_in']['username'];
+                        $email=$this->session->userdata['is_logged_in']['email_address'];
 			$data['query1']=$this->Admin_umodel->gettender($email);
 			$this->load->view('units/dashboard',$data);
 				
@@ -78,16 +78,118 @@ class Unit extends CI_Controller
 	function tendors()
 	{
 	          $this->load->model('Admin_umodel'); 
-                        $email=$this->session->userdata['is_logged_in']['username'];
+                        $email=$this->session->userdata['is_logged_in']['email_address'];
 			$data['query1']=$this->Admin_umodel->gettender($email);
 			$this->load->view('units/dashboard',$data);
 	}
 	
 	
-	 function addtendor()
+	 // function addtendor()
+  //              {
+
+		//      $this->load->model('Admin_model');
+		// 	 $this->load->model('Admin_umodel');
+		// 	 if ($this->input->server('REQUEST_METHOD') === 'POST')
+		//        {
+
+		// 	$this->form_validation->set_rules('tender_name', 'tender_name', 'required');
+		// 	$this->form_validation->set_rules('tender_due_date', 'tender_due_date', 'required');
+		// 	$this->form_validation->set_rules('tendor_code', 'tendor_code', 'required');
+		// 	$this->form_validation->set_rules('tendor_opening_date', 'tendor_opening_date', 'required');
+		// 	$this->form_validation->set_rules('tender_date', 'tender_date', 'required');
+		// 	$this->form_validation->set_rules('tendor_opening_time', 'tendor_opening_time', 'required');
+		// 	$this->form_validation->set_rules('tender_due_time', 'tender_due_time', 'required');
+			
+		// 	$this->form_validation->set_error_delimiters('<div class="alert alert-error"><a class="close" data-dismiss="alert">×                                                          </a><strong>', '</strong></div>');
+			
+			
+		// 	if ($this->form_validation->run())
+		// 	{
+
+
+		// 		include("lib/imageManipulation.php");
+		// 		include("lib/resize-class.php");
+                      
+		// 		$path=$_FILES['tender_path']['name'];
+		// 		  $type		=pathinfo($path,PATHINFO_EXTENSION);
+  //                               if($type=='pdf')
+  //                               {
+		// 		     $img_name	= $_FILES['tender_path']['name'];
+		// 		     if(empty($path))
+		// 		    {
+		// 		     $big_image="assets_admin/dist/img/boxed-bg.png";
+				
+		// 		     }
+		// 		      else
+		// 		       {
+		// 		          $big_image ="assets_admin/dist/img/tendor/".$img_name;
+		// 		          copy($_FILES['tender_path']['tmp_name'],$big_image);
+			      
+			    
+		// 		        }
+		// 	$email= $this->session->userdata['is_logged_in']['email_address'];
+		// 	$data['que']=$this->Admin_umodel->getunittendor($email);
+		// 	foreach ($data['que'] as $row)  
+  //     		         {  
+  //        	             $units_name= $row->units_name;
+  //        	             $departments_name= $row->departments_name; 
+  //        	             $units_id= $row->units_id; 
+  //        	             $deparments_id= $row->deparments_id; 
+  //     		         } 
+
+                      
+      		         
+  //     		          $current=date('Y-m-d');
+		// 	$time6 = date('H:i:s', time());	
+		// 		     $data_to_store = array(
+		// 		    'tender_id' => $this->input->post(''),
+		// 		    'tendor_code' => $this->input->post('tendor_code'),
+		// 		    'tender_name' => $this->input->post('tender_name'),
+		// 		    'tender_path'=>$big_image , 
+		// 		    'tender_due_date' => $this->input->post('tender_due_date'),
+		// 		    'tender_date' => $this->input->post('tender_date'),
+		// 		    'tendor_opening_date' => $this->input->post('tendor_opening_date'),
+		// 		     'tender_due_time' => $this->input->post('tender_due_time'),
+		// 		     'tendor_opening_time' => $this->input->post('tendor_opening_time'),
+		// 		     'tendor_cancelled' => 'false',
+		// 		   'tendor_record_date'=>$current,
+  //                                  'tender_time'=>$time6,
+		// 		     'units_id' => $units_id,
+		// 		   'deparments_id' => $deparments_id,
+		// 		   'username' => $email,
+		// 		   'corrigendum_added'=>'0'
+		// 			  );
+
+		// 		$this->load->model('Admin_umodel');
+				
+		// 		if($this->Admin_umodel->store_tender($data_to_store))
+		// 		{
+		// 			$data['flash_message'] = TRUE;
+		// 		}
+		// 		else
+		// 		{
+		// 			$data['flash_message'] = FALSE;
+		// 		}
+				
+		// 		header("Location:".  base_url()."unit/tendors");
+		// 	} 
+                       
+  //                  }
+
+		// }
+
+		// $email= $this->session->userdata['is_logged_in']['email_address'];
+		// $data['query']=$this->Admin_umodel->getunittendor($email);
+		// $data['query_unit']=$this->Admin_model->get_unit();
+	 //    $data['query_departments']=$this->Admin_model->getdepartments();
+		//  $this->session->set_flashdata('message', 'File format Must be in Pdf');
+		// $this->load->view('units/addtendor',$data);
+		
+  //    }
+     function addtendor()
                {
 
-		
+		    $this->load->model('Admin_model');
 			 $this->load->model('Admin_umodel');
 			 if ($this->input->server('REQUEST_METHOD') === 'POST')
 		       {
@@ -105,62 +207,45 @@ class Unit extends CI_Controller
 			
 			if ($this->form_validation->run())
 			{
-				include("lib/imageManipulation.php");
-				include("lib/resize-class.php");
-                      
-				$path=$_FILES['tender_path']['name'];
-				  $type		=pathinfo($path,PATHINFO_EXTENSION);
-                                if($type=='pdf')
-                                {
-				     $img_name	= $_FILES['tender_path']['name'];
-				     if(empty($path))
-				    {
-				     $big_image 	=	"assets_admin/dist/img/boxed-bg.png";
-				
-				     }
-				      else
-				       {
-				          $big_image 	=	"assets_admin/dist/img/tendor/".$img_name;
-				          copy($_FILES['tender_path']['tmp_name'],$big_image);
-			      
-			    
-				        }
+               //$folderName=$max_dev_id;
+  	    	//$pathToUpload ='assets/uploads/tenders/'.$folderName."/";
+  	    	$pathToUpload ='assets/uploads/tenders/';
 
-				
-				 $email= $this->session->userdata['is_logged_in']['username'];
-			$data['que']=$this->Admin_umodel->getunittendor($email);
-			foreach ($data['que'] as $row)  
-      		         {  
-         	             $units_name= $row->units_name;
-         	             $departments_name= $row->departments_name; 
-         	             echo  $units_id= $row->units_id; 
-         	             $deparments_id= $row->deparments_id; 
-      		         } 
+  	    	if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			  }
+			   $this->load->library('upload');
+			    $fileName=$_FILES['tender_path']['name'];
+            	$config['upload_path'] = $pathToUpload;
+	            $config['allowed_types'] ='pdf';
+	            $config['file_name'] = $fileName;
 
-                      
-      		         
-      		          $current=date('Y-m-d');
-			$time6 = date('H:i:s', time());	
-				     $data_to_store = array(
-				    'tender_id' => $this->input->post(''),
-				    'tendor_code' => $this->input->post('tendor_code'),
-				    'tender_name' => $this->input->post('tender_name'),
-				    'tender_path'=>$big_image , 
-				    'tender_due_date' => $this->input->post('tender_due_date'),
-				     'tender_date' => $this->input->post('tender_date'),
-				     'tendor_opening_date' => $this->input->post('tendor_opening_date'),
-				     'tender_due_time' => $this->input->post('tender_due_time'),
-				     'tendor_opening_time' => $this->input->post('tendor_opening_time'),
-				     'tendor_cancelled' => 'false',
-				   'tendor_record_date'=>$current,
-                                   'tender_time'=>$time6,
-				'units_id' => $units_id,
-				   'deparments_id' => $deparments_id,
-				   'username' => $email,
-				   'corrigendum_added'=>'0'
-					  );
+	             $this->upload->initialize($config);
+                if ($this->upload->do_upload('tender_path')) {
+                    $data = $this->upload->data();
+                } else {
+                    $errors = $this->upload->display_errors();
+                }
+
+                 if(!empty($errors)) {
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+	            	redirect(site_url('unit/addtendor'));
+	                } else {
+	            	$filePath =$data['file_name'];
+	               
+
+  	    	      if($this->Admin_umodel->store_tender($filePath)){ 
+		 	        $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved </div>");
+			 	        redirect('unit/addtendor');
+				               }else{
+						$this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+						redirect('unit/addtendor');
+		 		                }
+
+  	                        }
+
+                  
 				$this->load->model('Admin_umodel');
-				
 				if($this->Admin_umodel->store_tender($data_to_store))
 				{
 					$data['flash_message'] = TRUE;
@@ -173,17 +258,18 @@ class Unit extends CI_Controller
 				header("Location:".  base_url()."unit/tendors");
 			} 
                        
-                   }
+                   //}
 
 		}
 
-		$email= $this->session->userdata['is_logged_in']['username'];
-		 $data['query']=$this->Admin_umodel->getunittendor($email);
-		 $this->session->set_flashdata('message', 'File format Must be in Pdf');
+		$email= $this->session->userdata['is_logged_in']['email_address'];
+		$data['query']=$this->Admin_umodel->getunittendor($email);
+		$data['query_unit']=$this->Admin_model->get_unit();
+	    $data['query_departments']=$this->Admin_model->getdepartments();
+		$this->session->set_flashdata('message', 'File format Must be in Pdf');
 		$this->load->view('units/addtendor',$data);
 		
      }
-     
      
 	function corrigendum()
 	{
@@ -234,7 +320,7 @@ class Unit extends CI_Controller
 			    
 				        }
 				}
-				 $email= $this->session->userdata['is_logged_in']['username'];
+				 $email= $this->session->userdata['is_logged_in']['email_address'];
                        
 			$data['que']=$this->Admin_umodel->getunittendor($email);
 			foreach ($data['que'] as $row)  
@@ -293,7 +379,7 @@ class Unit extends CI_Controller
 			}
 		}
 
-		 $email= $this->session->userdata['is_logged_in']['username'];
+		 $email= $this->session->userdata['is_logged_in']['email_address'];
                
 		  $data['query']=$this->Admin_umodel->gettender($email);
                   
@@ -349,7 +435,7 @@ class Unit extends CI_Controller
 			{
 				
 				
-				 $email= $this->session->userdata['is_logged_in']['username'];
+				 $email= $this->session->userdata['is_logged_in']['email_address'];
 			$data['que']=$this->Admin_umodel->getunittendor($email);
 			foreach ($data['que'] as $row)  
       		         {  
@@ -404,8 +490,9 @@ class Unit extends CI_Controller
 				header("Location:".  base_url()."unit/contracts");
 			}
 		}
-
-		$email= $this->session->userdata['is_logged_in']['username'];
+print_r($this->session->userdata['is_logged_in']);
+exit;
+		$email= $this->session->userdata['is_logged_in']['email_address'];
 		 $data['query']=$this->Admin_umodel->gettender($email);
 		  $data['query1']=$this->Admin_umodel->getunittendor($email);
                $this->load->view('units/add_contract',$data);

@@ -48,7 +48,7 @@
                         
                         <td><a href="<?php echo base_url();?>admin/editdepartments/<?php echo $dept->departments_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit</a>
 
-                        <a href="<?php echo base_url();?>admin/removedepartments/<?php echo $dept->departments_id;?>" class="btn btn-block btn-danger" style="width: 59px;margin-top: -34px;
+                        <a href="<?php echo base_url();?>admin/removedepartments/<?php echo $dept->departments_id;?>" onclick = "return delConfirm()" class="btn btn-block btn-danger" style="width: 59px;margin-top: -34px;
   margin-left: 64px;">Delete</a>
 
 
@@ -68,3 +68,18 @@
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
      <?php include('include/footer.php'); ?>
+
+      <script>
+    function delConfirm()
+    {
+        var r=confirm('Do you want to delete');
+        if( r == true )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    </script>

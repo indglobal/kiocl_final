@@ -6,7 +6,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-          Departments List
+          User List
            
           </h1>
           <ol class="breadcrumb">
@@ -20,8 +20,7 @@
         <section class="content">
           <div class="row">
             <div class="col-xs-12">
-              
-
+          
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title"><a href="<?php echo base_url();?>admin/addUser" class="btn btn-block btn-success" style="width: 120px;;">Add User</a></h3>
@@ -53,11 +52,12 @@
                             <td><?php echo $user->password;?></td>
                              
                         
-                        <td><a href="<?php echo base_url();?>admin/edituser/<?php echo $user->user_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit</a>
-                        <a href="<?php echo base_url();?>admin/removeuser/<?php echo $user->user_id;?>" class="btn btn-block btn-danger" style="width: 59px;margin-top: -34px;
+                        <td>
+                        <a href="<?php echo base_url();?>admin/edituser/<?php echo $user->user_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit</a>
+                        <a href="<?php echo base_url();?>admin/removeuser/<?php echo $user->user_id;?>" class="btn btn-block btn-danger" onclick = "return delConfirm()" style="width: 59px;margin-top: -34px;
   margin-left: 64px;">Delete</a>
-                         <a href="<?php echo base_url();?>admin/set_permission/<?php echo $user->user_id;?>" class="btn btn-block btn-danger" style="width: 59px;margin-top: -34px;
-  margin-left: 64px;">Delete</a>
+
+            
   </td>
                       </tr>
                       <?php } ?>
@@ -72,3 +72,19 @@
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
      <?php include('include/footer.php'); ?>
+
+
+      <script>
+    function delConfirm()
+    {
+        var r=confirm('Do you want to delete');
+        if( r == true )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    </script>

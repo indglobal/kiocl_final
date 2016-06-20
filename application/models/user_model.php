@@ -9,7 +9,16 @@ class User_model extends CI_Model
 	}
 
     
-    
+    function getcat_subcat()
+		{
+			$query = $this->db->query("SELECT
+            cat_id, cat_name, link, parent_id, priority
+            FROM tbl_categories where status_for_content !=2
+            ORDER BY parent_id, priority, cat_name");
+			return $query->result_array();
+   
+		}
+
     function gettender($current)
 		{
 			$query = $this->db->query("SELECT t.tender_id,t.tender_name,t.tender_path,t.tendor_code,t.tender_date,t.tender_due_date,t.tendor_opening_date,t.tendor_opening_time,t.corrigendum_added,t.tender_due_time,t.tendor_cancelled,t.units_id,u.units_name,t.deparments_id,d.departments_name FROM tender t
@@ -32,6 +41,25 @@ JOIn departments d ON d.departments_id=c.deparments_id where c.corrigendum_due_d
                function getunit()
 		{
 			$query = $this->db->query("SELECT * from units  ");
+			return $query->result();
+   
+		}
+
+		 function sliders()
+		{
+			$query = $this->db->query("SELECT * from example_5");
+			return $query->result();
+		}
+		function gallery()
+		{
+			$query = $this->db->query("SELECT * from example_4");
+			return $query->result();
+   
+		}
+
+		function whatsnew()
+		{
+			$query = $this->db->query("SELECT * from whatsnew");
 			return $query->result();
    
 		}

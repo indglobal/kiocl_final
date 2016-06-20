@@ -33,6 +33,27 @@
                 <!-- form start -->
                 <form role="form" action="<?php echo base_url();?>unit/addtendor" method="post" enctype="multipart/form-data" >
                  <div class="box-body">
+                 <div class="form-group">
+                      <label>Select</label>
+                      <select class="form-control"  name="units_id" id="units_id" style="width: 306px;" >
+                        <option>Select Unit</option>
+                        <?php
+                            foreach($query_unit as $unit){
+                                echo '<option value="'.$unit->units_id.'">'.$unit->units_name.'</option>';
+                              }?>   
+                      </select>
+                    </div>
+                    
+                     <div class="form-group">
+                      <label>Select</label>
+                      <select class="form-control"  name="deparments_id" id="deparments_id" style="width: 306px;" >
+                        <option>Select Departments</option>
+                       <?php
+                            foreach($query_departments as $dept){
+                                echo '<option value="'.$dept->departments_id.'">'.$dept->departments_name.'</option>';
+                              }?> 
+                      </select>
+                    </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Tender  EOI Ref No </label>
                       <input type="text" class="form-control" id="tendor_code" placeholder="Tendor EOI Ref No" name="tendor_code" style="width: 306px;">

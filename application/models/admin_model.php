@@ -108,6 +108,14 @@ class Admin_model extends CI_Model
     	$result = $this->db->get();
  		return $result->result_array();
 	 }
+	 function getcontent_type()
+	 {
+	    $this->db->select('*');
+    	$this->db->from('content_type');
+    	$result = $this->db->get();
+ 		return $result->result_array();
+	 }
+	 
 		function get_permission_list()
 		{
 
@@ -179,31 +187,36 @@ $data = array(
 }
     }
 
-    function save_subcontent($id){
+    function save_subcontent($id,$filepath){
 
     extract($_POST);
-//$subcat_id=$this->input->post('subcat_id');
         $subcat_exists=$this->Admin_model->chksubcatexists($subcat_id);
         if($subcat_exists=="empty"){
         }else{
         $id=$subcat_exists;
         }
+   ///insert
   if($id==""){
-$data = array(
+  $data = array(
             'cat_id'=>$cat_id,
             'subcat_id'=>$subcat_id,
-            'content'=>$content,             
+            'content'=>$content, 
+            'upload_url'=>$filepath,             
     );
+  // print_r($data);
+  // exit();
  if($this->db->insert('subcat_contents', $data))
     {
       return true;
     } else {
     }
-  }else{
+
+  }else{//update
   	$data = array(
             'cat_id'=>$cat_id,
             'subcat_id'=>$subcat_id,
-            'content'=>$content,             
+            'content'=>$content,   
+            'upload_url'=>$filepath,          
     );
   	$this->db->where('id', $id);
     $r=$this->db->update('subcat_contents', $data);
@@ -214,15 +227,23 @@ $data = array(
    	return false;
    }
   }
-    
-
-
+  
     }
 
+    function deletesubcat($id)
+	{
+		$this->db->delete('tbl_categories', array('cat_id' => $id));
+	}
+     function delete_cat($id)
+	{
+		$this->db->delete('tbl_categories', array('cat_id' => $id));
+	}
     function getContent_byid($id){
        $this->db->select('*');
         $this->db->from('subcat_contents');
         $this->db->where(array('subcat_contents.id' =>$id));
+        $this->db->join('tbl_categories', 'tbl_categories.cat_id = subcat_contents.cat_id', 'left');
+
         $result = $this->db->get();
         return $result->result_array();
     }
@@ -328,6 +349,8 @@ $data = array(
       $result = $this->db->get();
       return $result->result_array();
    }
+
+   
 	function update_ajax(){
         $value=$_POST['value'];
         $row_id=$_POST['row_id'];
@@ -452,8 +475,38 @@ $data = array(
 		}	
 		function storecat($data)
 		{
-			$insert = $this->db->insert('tbl_categories', $data);
-			return $insert;
+			extract($_POST);
+   
+
+  if($id==""){
+ $data = array(
+				    'content_type_id' => $this->input->post('content_type'),
+				    'cat_name' => $this->input->post('cat_name'),
+					  );
+ if($this->db->insert('tbl_categories', $data))
+    {
+      return true;
+    } else {
+      return false;
+    }
+  }else{
+// print_r("updte".$id);
+// exit();
+  	$data = array(
+     'content_type_id' => $this->input->post('content_type'),
+     'cat_name' => $this->input->post('cat_name'),     
+    );
+  	$this->db->where('cat_id', $id);
+    $r=$this->db->update('tbl_categories', $data);
+
+   if($r){
+   return true;
+   }else{
+   	return false;
+   }
+  } 
+			// $insert = $this->db->insert('tbl_categories', $data);
+			// return $insert;
 			
 		}
 

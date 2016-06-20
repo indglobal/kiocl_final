@@ -75,6 +75,7 @@ foreach ($query1  as $dept)
                 <td>
                     <a href="<?php echo base_url();?>admin/addsub/<?php echo $dept->cat_id;;?>" class="btn btn-block btn-info" style="width: 59px;">Edit
                     </a>
+                    <a href="<?php echo base_url(); ?>admin/deletesubcat/delete_cat/<?php echo $dept->cat_id;?>" class="btn btn-danger" onclick = "return delConfirm()">Delete</a>
                     
                   </td>
                                                                                                                                     
@@ -218,3 +219,18 @@ $(document).ready(function() {
     });
 
 </script>
+
+ <script>
+    function delConfirm()
+    {
+        var r=confirm('Do you want to delete');
+        if( r == true )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    </script>

@@ -1,5 +1,16 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+ function get_Submenucontent_val($subcat){
+ 	$CI =& get_instance();	
+     $CI->db->select('*');
+      $CI->db->from('subcat_contents');
+      $CI->db->join('tbl_categories', 'tbl_categories.cat_id = subcat_contents.subcat_id', 'left');
+      $CI->db->where('subcat_id',$subcat);
+      $CI->db->order_by("id desc");
+      $result = $CI->db->get();
+      return $result->result_array();
+   }
+
 function update_priority($data)
 	{
 	$CI =& get_instance();	

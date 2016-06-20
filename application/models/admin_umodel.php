@@ -53,13 +53,47 @@ JOIn departments d ON d.departments_id=us.deparments_id  WHERE us.username='$ema
    
 		}
 		
-		function store_tender($data)
-		{
-			$insert = $this->db->insert('tender', $data);
-			return $insert;
+		// function store_tender($data)
+		// {
+		// 	$insert = $this->db->insert('tender', $data);
+		// 	return $insert;
 			
-		}
-		
+		// }
+
+		function store_tender($filePath) {
+        extract($_POST);
+       $email= $this->session->userdata['is_logged_in']['email_address'];
+      		          $current=date('Y-m-d');
+			$time6 = date('H:i:s', time());	
+				     $data_to_store = array(
+				    'tender_id' => $this->input->post(''),
+				    'tendor_code' => $this->input->post('tendor_code'),
+				    'tender_name' => $this->input->post('tender_name'),
+				    'tender_path'=>$filePath, 
+				    'tender_due_date' => $this->input->post('tender_due_date'),
+				    'tender_date' => $this->input->post('tender_date'),
+				    'tendor_opening_date' => $this->input->post('tendor_opening_date'),
+				    'tender_due_time' => $this->input->post('tender_due_time'),
+				    'tendor_opening_time' => $this->input->post('tendor_opening_time'),
+				    'tendor_cancelled' => 'false',
+				    'tendor_record_date'=>$current,
+                    'tender_time'=>$time6,
+				    'units_id' => $units_id,
+				    'deparments_id' => $deparments_id,
+				    'username' => $email,
+				    'corrigendum_added'=>'0',
+				    'created_at'=>$current,
+				    'modified_at'=>$current
+					  );
+        
+      // print_r($data_to_store);
+      // exit();
+        if($this->db->insert('tender', $data_to_store)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 		
 		function getcorrigendum()
 		{

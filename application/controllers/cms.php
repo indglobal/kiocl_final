@@ -49,6 +49,14 @@ class cms extends CI_Controller
 			$data['query1']=$this->cms_model->get_whatsnew();
 			$this->load->view('cms/whatsnew_list',$data);
 		}
+		function delete_whatsnew()
+	{
+	    $this->load->model('cms_model');
+		if($this->uri->segment(3, 0) != ""){
+		$this->cms_model->delete_whatsnew($this->uri->segment(3, 0));	
+	}
+		redirect("cms/whatsnew");
+	}
 		function manage_content($cat_id,$uri='')
 		{
           $data['uri']=$uri;

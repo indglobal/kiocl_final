@@ -2,7 +2,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="">ITI</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2014-2015 <a href="">KIOCL</a>.</strong> All rights reserved.
       </footer>
       
      
@@ -46,9 +46,9 @@ $('.datetimepicker2').datetimepicker({
         format: 'dd/MM/yyyy',
         language: 'en'
       });
-	    $('.datetimepicker3').datetimepicker({
-	      pickDate: false
-	    });
+      $('.datetimepicker3').datetimepicker({
+        pickDate: false
+      });
 </script>
 
   </body>

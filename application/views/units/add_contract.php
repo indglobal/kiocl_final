@@ -6,10 +6,9 @@
         <section class="content-header">
           <h1>
             Contracts
-            
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
            
             <li class="active">Contracts</li>
           </ol>
@@ -24,7 +23,7 @@
               <div class="box box-primary">
                 <div class="box-header">
                   <h3 class="box-title">Add Contracts</h3>
-                  <?php  echo validation_errors(); ?> 
+                  <?php  echo validation_errors();?> 
                 </div><!-- /.box-header -->
                 <!-- form start -->
                 <form role="form" action="<?php echo base_url();?>unit/addcontracts" method="post" enctype="multipart/form-data" >
@@ -35,8 +34,7 @@
 												<option value="Select tendor_code">Select Tendor EOI Ref No</option>
 												<?php
 												foreach($query as $blog)
-        
-											{
+											           {
 									echo '<option value="'.$blog->tendor_code.'">'.$blog->tendor_code.'</option>';
 							                   }
 

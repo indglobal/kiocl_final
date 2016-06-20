@@ -84,6 +84,32 @@
                 <i class="fa fa-th"></i> <span>Slider</span> 
               </a>
             </li>
+              <li class="treeview">
+              <a href="<?php echo base_url(); ?>unit/tendors">
+                <i class="fa fa-files-o"></i>
+                <span>Tenders</span>
+               
+              </a>
+             
+            </li>
+            
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>unit/corrigendum">
+                <i class="fa fa-files-o"></i>
+                <span>Corrigendum</span>
+               
+              </a>
+             
+            </li>
+            
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>unit/contracts">
+                <i class="fa fa-files-o"></i>
+                <span>Contracts</span>
+               
+              </a>
+             
+            </li>
 
             <li>
               <a href="<?php echo base_url(); ?>admin/manage">

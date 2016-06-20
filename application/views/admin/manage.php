@@ -37,7 +37,7 @@
           </a>
             </h3>
           </div>-->
-          <!-- /.box-header -->
+          <!--/.box-header-->
          
           <div class="box-body">
 <?php $msg = $this->session->flashdata('message');
@@ -63,11 +63,9 @@ echo $msg;
           <?php $i=1;?>
             <?php foreach ($query1  as $content):
             ?>
-<!--                <tr id="<?php echo $dept->cat_id;?>">
- -->               <tr id="image_li_<?php echo $content['id']; ?>">
+            <tr id="image_li_<?php echo $content['id']; ?>">
                 
-<!-- <input type="hidden" id1="<?php echo $dept->cat_id; ?>">
- -->                <td id1="<?php echo $content['id']; ?>">
+              <td id1="<?php echo $content['id']; ?>">
                     <?php echo $i;?>
                   </td>
                   <td class="edit">
@@ -79,13 +77,13 @@ echo $msg;
                    <td>
                     <?php echo $content['content'];?>
                   </td>
-                  
+                
                   <td>
                     <a href="<?php echo base_url();?>admin/add_subcatcontent/<?php echo $content['id'];?>" class="btn btn-block btn-info" style="width: 59px;">Edit
                     </a>
                   </td>
                 </tr>
-              <?php $i++; ?>
+              <?php $i++;?>
 
             <?php endforeach ?>
     </tbody>
@@ -127,7 +125,7 @@ echo $msg;
             $('td.index', ui.item.parent()).each(function (i) {
               $(this).html(i + 1);
             }
-                                                );
+              );
           };
 
 
@@ -176,7 +174,7 @@ echo $msg;
 <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>includes/jquery.jeditable.js"></script>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
  
 $(document).ready(function() {
        $("#example").dataTable();
@@ -198,7 +196,6 @@ $(document).ready(function() {
                             "column": oTable.fnGetPosition(this)[2]
                         };
                     },
-      
                     "height": "24px",
                     "width": "100%",
                     "onblur": "submit"
@@ -206,7 +203,7 @@ $(document).ready(function() {
     });
 
 
-</script>
+</script> -->
 
 <script type="text/javascript">
   $(document).on('click', '.approved',function(){
@@ -222,15 +219,13 @@ $(document).ready(function() {
                     if (res=="success")
                      {
                       $("#approved_"+cat_id).removeClass("btn btn-success");
-                       $("#approved_"+cat_id).addClass("btn btn-default"); 
-
-                      
+                      $("#approved_"+cat_id).addClass("btn btn-default");  
                      }else if(res=="fail"){
                         $("#approved_"+cat_id).removeClass("btn btn-default");
                        $("#approved_"+cat_id).addClass("btn btn-success"); 
                      }
 
-                                        }
+                }
        });
   
 

@@ -45,7 +45,11 @@
       <input type="hidden" name="id" value="<?php echo $id;?>">
 
     <legend style="font-size:15px; color:#3b5999; font-weight:700">Content » <small style="font-size:11px"> Use the below panel to add whatsnew details.</small></legend>
-        <div class="col-xs-6 form-group">
+    <div class="form-group">
+                      <label for="exampleInputEmail1">Heading</label>
+                      <input type="text" class="form-control" id="Categories_name" value="<?php if(empty($getwhatsnew_byid)){echo "";}else{ echo $getwhatsnew_byid[0]['heading'];}?>" placeholder="Heading Name" name="heading" style="width: 306px;">
+                    </div>
+        <div class="form-group">
             <label id="label">content: *</label>
           <textarea id="postBody" name="whatsnew_content"><?php if(empty($getwhatsnew_byid)){echo "";}else{ echo $getwhatsnew_byid[0]['whatsnew_content'];}?></textarea>
           <?php  echo set_value('whatsnew_content');?><?php echo form_error('whatsnew_content', '<div class="error" style="color:red;">', '</div>');?> 

@@ -131,7 +131,6 @@ class Admin extends CI_Controller
 			$this->load->model('Admin_model');
 			$product = $this->Admin_model->getunitdata($id);
 		   
-		
 		   $this->form_validation->set_rules('units_name', 'units_name', 'required');
 						
 		   if ($this->form_validation->run())
@@ -139,8 +138,6 @@ class Admin extends CI_Controller
 			   				 
 			$data = array(
 				    'units_name' => $this->input->post('units_name'),
-	
-					
 				   );
 			$this->load->model('Admin_model');
 			
@@ -339,7 +336,7 @@ class Admin extends CI_Controller
      public function getSubat_id() {
           $this->load->model('Admin_model');
 
-          $data['dept_id']=$this->session->userdata['is_logged_in']['deparments_id'];
+        $data['dept_id']=$this->session->userdata['is_logged_in']['deparments_id'];
         $data['selected_permissions']=$this->Admin_model->get_selected_permissions($data['dept_id']);
 
  if($this->session->userdata['is_logged_in']['email_address']=="admin@gmail.com"){
@@ -357,17 +354,28 @@ $permissions=unserialize($record['permissions_id']);
     	$result = $this->db->get();
     	echo '<option value="0">--Select--</option>';
     	foreach ($result->result_array() as $value) {
+   if($this->session->userdata['is_logged_in']['email_address']=="admin@gmail.com"){
+   echo '<option value="'.$value['cat_id'].'">'.$value['cat_name'].'</option>';
+
+}else{	
+
         if(in_array($value['cat_id'], $new)) { 
         echo '<option value="'.$value['cat_id'].'">'.$value['cat_name'].'</option>';
            } else {
-            
-         } 
-        // echo '<option value="'.$value['cat_id'].'">'.$value['cat_name'].'</option>';
 
-           // }
+                   } 
 
     	}
+}
 
+	}
+	function getContenttpe(){
+		$cat_id = $this->input->post('cat_id');
+	    $this->db->select('content_type_id');
+        $this->db->where(array('tbl_categories.cat_id'=>$cat_id));
+        $result = $this->db->get('tbl_categories');
+        $row = $result->row();
+        echo $row->content_type_id;
 
 	}
 function getSubat_content()
@@ -388,9 +396,44 @@ function getSubat_content()
      $this->load->model('Admin_model');
      if($_POST){
      	$id=$this->input->post('id');
-     	if($this->Admin_model->save_subcontent($id))
-              { 
+         
 
+          if($_FILES['photograph']['name']=="")
+	        {
+	       $filepath="nofile";
+	        }else{
+	           	$cat_id=$this->input->post('cat_id');
+     	        $subcat_id=$this->input->post('subcat_id');
+
+     	        $pathToUpload ='assets/uploads/page_content/'.$cat_id."_".$subcat_id;
+  	    	    if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			                                        }
+			        $this->load->library('upload');
+			        $fileName=$_FILES['photograph']['name'];
+            	    $config['upload_path'] = $pathToUpload;
+	                $config['allowed_types'] ='gif|jpg|png|pdf';
+	                $config['file_name'] = $fileName;
+                    
+	                $this->upload->initialize($config);
+                    if($this->upload->do_upload('photograph')) {
+                    $data = $this->upload->data();
+                    $filepath=$data['file_name'];
+                    } else {
+                    $errors = $this->upload->display_errors();
+                            }
+                     if(!empty($errors)) {
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+                     redirect('admin/manage/');
+	                               } 
+                
+
+	        }
+	          // print_r($filepath);
+           //    exit();
+
+     	if($this->Admin_model->save_subcontent($id,$filepath))
+              { 
             $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved</div>");
             redirect('admin/manage/');
             } else {
@@ -403,9 +446,20 @@ function getSubat_content()
         $data['selected_permissions']=$this->Admin_model->get_selected_permissions($data['dept_id']);
         $data['id']=$id;
         $data['getContent_byid']=$this->Admin_model->getContent_byid($data['id']);
+        //print_r($data['getContent_byid']);
      	$data['all_category']=$this->Admin_model->get_categories();
 		$this->load->view('admin/add_subcatcontent',$data);
 	        }
+     }
+     function viewMinutesFile($id){
+           $this->load->model('Admin_model');
+
+$data['getContent_byid']=$this->Admin_model->getContent_byid($id);
+
+$url=base_url().'assets/uploads/page_content/4_6/'.$data['getContent_byid'][0]['upload_url'];
+    $this->output
+           ->set_content_type('application/pdf')
+           ->set_output(file_get_contents($url));
      }
      function manage(){
      	$this->load->model('Admin_model');
@@ -891,7 +945,15 @@ function getSubat_content()
       exit;
     }
 		}
-function update_status_subcategory(){
+		function deletesubcat()
+	{
+		$this->load->model('Admin_model');
+		if($this->uri->segment(3, 0) != ""){
+			$this->Admin_model->deletesubcat($this->uri->segment(4, 0));	
+		}
+		redirect("admin/subcategories");
+	}
+        function update_status_subcategory(){
 		$this->load->model('Admin_model');
          $subcat_id=$this->input->post('subcat_id');
          $status = $this->Admin_model->check_status_subcategory($subcat_id);
@@ -946,31 +1008,27 @@ $data['getsubCat_byid']="";
 $data['getCat_byid']="";   
     }else{
 $data['getsubCat_byid']=$this->Admin_model->getCategorydetail_byid($data['id']);
-$data['getCat_byid']=$this->Admin_model->getCategorydetail_byid($data['getsubCat
-_byid'][0]['parent_id']);
-     
- //$data['selected_permissions']=$this->Admin_model->get_selected_permissions($dept_id);
+$data['getCat_byid']=$this->Admin_model->getCategorydetail_byid($data['getsubCat_byid'][0]['parent_id']);
         }
 		$data['query']=$this->Admin_model->get_categories();
 		$this->load->view('admin/add_subcat',$data);
 		
      }	
 
-     function addcat() {		
+     function addcat($id='') {		
 			$this->load->model('Admin_model');
 			if ($this->input->server('REQUEST_METHOD') === 'POST')
 		    {
+		    $id=$this->input->post('id');
+
 			$this->form_validation->set_rules('cat_name', 'category name', 'required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error"><a class="close" data-dismiss="alert">×                                                          </a><strong>', '</strong></div>');
 			
 			
 			if ($this->form_validation->run())
 			{
-				     $data_to_store = array(
-				    'cat_name' => $this->input->post('cat_name'),
-					  );
-				
-				if($this->Admin_model->storecat($data_to_store))
+				    
+				if($this->Admin_model->storecat($id))
 				{
 					$data['flash_message'] = TRUE;
 				}
@@ -982,11 +1040,20 @@ _byid'][0]['parent_id']);
 				header("Location:".  base_url()."admin/categories");
 			}
 		}
-		$data['query']=$this->Admin_model->get_unit();
+		$data['id']=$id; 
+		$data['getCat_byid']=$this->Admin_model->getCategorydetail_byid($data['id']);      
+		$data['content_type']=$this->Admin_model->getcontent_type();
 		$this->load->view('admin/addcat',$data);
 		
      }	
-     
+     function delete_cat()
+	{
+		$this->load->model('Admin_model');
+		if($this->uri->segment(3, 0) != ""){
+		$this->Admin_model->delete_cat($this->uri->segment(3, 0));	
+		}
+		redirect("admin/categories");
+	}
        function editdepartments1($id)
 		{
 			$this->load->model('Admin_model');

@@ -25,14 +25,38 @@
                 <div class="box-header">
                   <h3 class="box-title">Add Menu</h3>
                   <?php  echo validation_errors(); ?> 
-                </div><!-- /.box-header -->
+                </div>
+                <!-- /.box-header -->
                 <!-- form start -->
                 <form role="form" action="<?php echo base_url();?>admin/addcat" method="post" enctype="multipart/form-data" >
                   <div class="box-body">
-                    
                     <div class="form-group">
                       <label for="exampleInputEmail1">Menu</label>
-                      <input type="text" class="form-control" id="Categories_name" placeholder="category Name" name="cat_name" style="width: 306px;">
+                      <input type="text" class="form-control" id="Categories_name" value="<?php if(!empty($getCat_byid)){echo $getCat_byid[0]['cat_name'];}?>" placeholder="Menu Name" name="cat_name" style="width: 306px;">
+                    </div>
+
+             <input type="hidden" name="id" value="<?php echo $id;?>">
+                    <div class="form-group">
+                      <label>Select</label>
+    <select class="form-control"  name="content_type" id="content_type"  style="width: 306px;">
+                        <option>Select Menu</option>
+                              <?php if(!empty($getCat_byid)){ 
+                                  foreach($content_type as $con){  ?>
+                                    <?php if($con['id'] == $getCat_byid[0]['content_type_id']) { ?>
+    <option value="<?php echo $con['id']; ?>" selected><?php echo $con['name']; ?>
+                        </option>
+                    <?php } else { ?>
+              <option value="<?php echo $con['id']; ?>"><?php echo $con['name'];?>
+                              <?php }
+                                     }
+                                     } else{
+                                      ?>    
+                                        <?php
+                            foreach($content_type as $con){ ?>
+              <option value="<?php echo $con['id']; ?>"><?php echo $con['name'];?>
+                              <?php }
+                    } ?>  
+                      </select>
                     </div>
                   </div><!-- /.box-body -->
 
@@ -41,12 +65,6 @@
                   </div>
                 </form>
               </div><!-- /.box -->
-
-             
-
-             
-
-          
 
             </div><!--/.col (left) -->
             

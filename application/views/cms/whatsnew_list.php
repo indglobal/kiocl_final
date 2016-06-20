@@ -50,7 +50,9 @@
        <tr>
                   <th>S No
                   </th>
-                  <th>Category
+                  <th>Content
+                  </th>
+                  <th>Heading
                   </th>
                   <th>Actions
                   </th>
@@ -69,12 +71,16 @@
                     <?php echo $i;?>
                   </td>
                   <td>
+                    <?php echo $dept->heading;?>
+                  </td>
+                  <td>
                     <?php echo $dept->whatsnew_content;?>
                   </td>
                 
                   <td>
                     <a href="<?php echo base_url();?>cms/add_whatsnew/<?php echo $dept->whatsnew_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit
                     </a>
+                   <a href="<?php echo base_url(); ?>cms/delete_whatsnew/<?php echo $dept->whatsnew_id;?>" class="btn btn-danger" onclick = "return delConfirm()">Delete</a>
                     
                   </td>
                 </tr>
@@ -229,5 +235,19 @@ $(document).ready(function() {
 
   });
 
-
-                  </script>
+  </script>
+  
+  <script>
+    function delConfirm()
+    {
+        var r=confirm('Do you want to delete');
+        if( r == true )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    </script>

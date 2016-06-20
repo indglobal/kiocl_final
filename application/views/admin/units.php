@@ -38,10 +38,10 @@
                     </thead>
                     <tbody>
                     <?php 
-                                    foreach ($query1  as $unit)
-				{
+          foreach ($query1  as $unit)
+				     {
 						
-			?>
+			              ?>
                       <tr>
                         <td><?php echo $unit->units_id;?></td>
                         <td><?php echo $unit->units_name;?></td>

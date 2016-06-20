@@ -1,0 +1,42 @@
+#third-section{background-color: #000;}
+#fourth-section{background-color: rgba(0,0,0,0.5);color: #fff;}
+.director-name{color: #ffffff;background-color: #000;}
+.about_main{
+	background-color:#000;
+}
+.h3.title span{
+  display: inline-block;
+  color: #fff;
+  background-color: #F7941D;
+  padding: 5px 20px;
+  width: 250px;
+}
+.about_data{
+	color:#fff;
+}
+.cmd_details{
+	background-color:#000;
+}
+.cmd_detailsdata{
+	color: #fff;
+}
+.contactus_page{
+	background-color:#000;
+}
+.contactus_data{
+	color:#fff;
+}
+.table-hover.table-hover > tbody > tr:hover{
+	background-color: #ccc;
+	color: #000;
+}
+.history_page,.prdocuts_page,.service_page{
+	background-color:#000;
+}
+.history_data,.products_data,.service_data{
+	color:#fff;
+}
+.carousel-control.right,.carousel-control.left{
+  background-image: none;
+}
+

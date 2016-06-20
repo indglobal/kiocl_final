@@ -44,25 +44,19 @@ class cms_model extends CI_Model
 			$query = $this->db->query("SELECT * from whatsnew");
 			return $query->result();   
 		}
+     function delete_whatsnew($id)
+  {
+    $this->db->delete('whatsnew', array('whatsnew_id' => $id));
+  }
 		function save_whatsnewcontent(){
-        //  extract($_POST);
-        
-        // $data = array(
-        //     'whatsnew_content'=>$whatsnew_content,
-           
-        // );
-        
-        // if($this->db->insert('whatsnew', $data)){
-        //     return true;
-        // } else {
-        //     return false;
-        // }
+
 		 extract($_POST);
    
 
   if($id==""){
 
  $data = array(
+  'heading'=>$heading,
         'whatsnew_content'=>$whatsnew_content,
 					  );
  if($this->db->insert('whatsnew', $data))
@@ -74,6 +68,7 @@ class cms_model extends CI_Model
   }else{
 
   	$data = array(
+      'heading'=>$heading,
         'whatsnew_content'=>$whatsnew_content,
     );
   	$this->db->where('whatsnew_id', $id);
@@ -91,6 +86,7 @@ class cms_model extends CI_Model
          extract($_POST);
         
         $data = array(
+          'heading'=>$heading,
             'cat_name'=>$content_type,
            
         );

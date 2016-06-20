@@ -40,47 +40,6 @@
           <!-- /.box-header -->
          
           <div class="box-body">
-            <!-- <table id="example" class="table table-bordered table-striped sorted_table">
-              <thead>
-                <tr>
-                  <th>S No
-                  </th>
-                  <th>Category
-                  </th>
-                  <th>Status
-                  </th>
-                  <th>Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php 
-$i = 1;
-foreach ($query1  as $dept)
-{     
-?>
-                <tr id="image_li_<?php echo $dept->cat_id; ?>">
-                  <td>
-                    <?php echo $i;?>
-                  </td>
-                  <td class="edit">
-                    <?php echo $dept->cat_name;?>
-                  </td>
-                  <td >
-                    <?php echo $dept->status;?>
-                  </td>
-                  <td>
-                    <a href="<?php echo base_url();?>admin/edit_categories/<?php echo $dept->cat_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit
-                    </a>
-                    <a href="<?php echo base_url();?>admin/remove_categories/<?php echo $dept->cat_id;?>" class="btn btn-block btn-danger" style="width: 59px;margin-top: -34px;
-                    </a>
-                  </td>
-                </tr>
-                <?php $i++; } ?>
-              </tbody>
-            </table> -->
-
-
             <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example" width="100%">
     <thead>
        <tr>
@@ -90,8 +49,8 @@ foreach ($query1  as $dept)
                   </th>
                   <th>Status
                   </th>
-                  <!-- <th>Actions
-                  </th> -->
+                  <th>Actions
+                  </th>
                 </tr>
     </thead>
     <tbody> 
@@ -111,11 +70,12 @@ foreach ($query1  as $dept)
                   </td>
                   <td >
 <button id="approved_<?php echo $dept->cat_id;?>" <?php if($dept->status=="0"){?>class="btn btn-default approved"<?php }else{?>class="btn btn-success approved"<?php } ?>>Active</button>                  </td>
-                  <!-- <td>
-                    <a href="<?php echo base_url();?>admin/edit_categories/<?php echo $dept->cat_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit
+                  <td>
+                    <a href="<?php echo base_url();?>admin/addcat/<?php echo $dept->cat_id;?>" class="btn btn-block btn-info" style="width: 59px;">Edit
                     </a>
+                    <a href="<?php echo base_url(); ?>admin/delete_cat/<?php echo $dept->cat_id;?>" class="btn btn-danger" onclick = "return delConfirm()">Delete</a>
                     
-                  </td> -->
+                  </td>
                 </tr>
               <?php $i++; ?>
 
@@ -270,3 +230,17 @@ $(document).ready(function() {
 
 
                   </script>
+   <script>
+    function delConfirm()
+    {
+        var r=confirm('Do you want to delete');
+        if( r == true )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    </script>
