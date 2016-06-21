@@ -41,6 +41,8 @@
                 <div class="box-header">
                   <h3 class="box-title">Add Corrigendum</h3>
                   <?php  echo validation_errors(); ?> 
+                  <?php echo $this->session->flashdata('message');?> 
+
                 </div><!-- /.box-header -->
                 <!-- form start -->
                 <form role="form" action="<?php echo base_url();?>unit/addcorrigendum" method="post" enctype="multipart/form-data" >
@@ -59,7 +61,11 @@
 												?>		
 											</select>
                     </div>
-                  
+                  <input type="hidden" name="tender_id" value="<?php echo $query[0]->tender_id;?>">
+                  <input type="hidden" name="dept_id" value="<?php echo $query[0]->deparments_id;?>">
+                  <input type="hidden" name="units_id" value="<?php echo $query[0]->units_id;?>">
+                  <input type="hidden" name="tender_name" value="<?php echo $query[0]->tender_name;?>">
+
                     <div class="form-group">
                       <label for="exampleInputEmail1">Corrigendum Ref No</label>
                       <input type="text" class="form-control" id="corrigendum_code" placeholder="Corrigendum Ref No" name="corrigendum_code" style="width: 306px;">

@@ -117,13 +117,59 @@
               </a>
             </li>
 
-<?php } else {  ?>
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>admin/list_of_directors">
+                <i class="fa fa-files-o"></i>
+                <span>Directors</span>
+              </a>
+            </li>
 
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>admin/list_of_management">
+                <i class="fa fa-files-o"></i>
+                <span>Management</span>
+              </a>
+            </li>
+            
+
+             <li class="treeview">
+              <a href="<?php echo base_url(); ?>admin/list_of_grievance">
+                <i class="fa fa-files-o"></i>
+                <span>Grievance</span>
+              </a>
+            </li>
+
+<?php } else {  ?>
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>admin/list_of_community">
+                <i class="fa fa-files-o"></i>
+                <span>Community Development</span>
+              </a>
+            </li>
             <li>
               <a href="<?php echo base_url(); ?>admin/manage">
                 <i class="fa fa-th"></i> <span>Manage</span> 
               </a>
             </li>
+
+               <li class="treeview">
+              <a href="<?php echo base_url(); ?>unit/tendors">
+                <i class="fa fa-files-o"></i>
+                <span>Tenders</span>
+               
+              </a>
+             
+            </li>
+            
+            <li class="treeview">
+              <a href="<?php echo base_url(); ?>unit/corrigendum">
+                <i class="fa fa-files-o"></i>
+                <span>Corrigendum</span>
+               
+              </a>
+             
+            </li>
+
             <?php } ?>
 
 

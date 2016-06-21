@@ -53,8 +53,6 @@ class Admin extends CI_Controller
 		       $this->index();
 			}
 			else{
-
-			   //redirect(base_url().'user/index2');
 				$this->index();
 			}
 		}
@@ -369,6 +367,338 @@ $permissions=unserialize($record['permissions_id']);
 }
 
 	}
+
+	function add_directors($id='')
+        {
+          $this->load->model('Admin_model');
+          if($_POST){
+     	  $id=$this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'name','required');
+  	    	$this->form_validation->set_rules('designation', 'designation','required');
+  	    	$this->form_validation->set_rules('content', 'content','required');
+  	    	//$this->form_validation->set_rules('photograph', ' image','required');
+
+			   if($this->form_validation->run() == FALSE){ 
+
+               $data['id']=$id;
+               $data['getDirector']=$this->Admin_model->getDirector($data['id']);
+		       $this->load->view('admin/add_directors',$data);
+  
+			   }else{
+
+			   	if($_FILES['photograph']['name']=="")
+	          {
+	        	$filePath="";
+	        	if($this->Admin_model->save_director($id,$filePath))
+	        	{ 
+$this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved </div>");
+redirect('admin/list_of_directors/');
+	        	}
+
+	        }else{
+                   
+                   $image_old=$_POST['image_old'];
+                   
+
+           
+     	        $pathToUpload ='assets/uploads/directors/';
+  	    	    if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			                                        }
+			        $this->load->library('upload');
+			        $fileName=$_FILES['photograph']['name'];
+            	    $config['upload_path'] = $pathToUpload;
+	                $config['allowed_types'] ='gif|jpg|png';
+	                $config['file_name'] = $fileName;
+                    
+	                $this->upload->initialize($config);
+                    if($this->upload->do_upload('photograph')) {
+                    $data = $this->upload->data();
+                    $filepath=$data['file_name'];
+                    } else {
+                    $errors = $this->upload->display_errors();
+                            }
+                     if(!empty($errors)){
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+                     redirect('admin/list_of_directors/');
+	                               } 
+
+     	   if($this->Admin_model->save_director($id,$filepath))
+              { 
+              	if(isset($image_old)){
+                unlink($pathToUpload.$image_old);
+                                     }
+
+            $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved</div>");
+            redirect('admin/list_of_directors/');
+            } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+            redirect('admin/list_of_directors/');
+            }
+        }
+    }
+
+
+     }else{
+        $data['id']=$id;
+        $data['getDirector']=$this->Admin_model->getDirector($data['id']);
+		$this->load->view('admin/add_directors',$data);
+	        }
+	}
+
+	function add_manager($id='')
+        {
+          $this->load->model('Admin_model');
+          if($_POST){
+     	  $id=$this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'name','required');
+  	    	$this->form_validation->set_rules('designation', 'designation','required');
+  	    	// $this->form_validation->set_rules('content', 'content','required');
+  	        //$this->form_validation->set_rules('photograph', ' image','required');
+
+			   if($this->form_validation->run() == FALSE){ 
+
+               $data['id']=$id;
+               $data['getManager']=$this->Admin_model->getManager($data['id']);
+		       $this->load->view('admin/add_manager',$data);
+  
+			   }else{
+
+			   	if($_FILES['photograph']['name']=="")
+	          {
+	        	$filePath="";
+	        	if($this->Admin_model->save_manager($id,$filePath))
+	        	{ 
+$this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved </div>");
+redirect('admin/list_of_management/');
+	        	}
+
+	        }else{
+                   
+                   $image_old=$_POST['image_old'];
+               
+     	        $pathToUpload ='assets/uploads/manager/';
+  	    	    if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			                                 }
+			        $this->load->library('upload');
+			        $fileName=$_FILES['photograph']['name'];
+            	    $config['upload_path'] = $pathToUpload;
+	                $config['allowed_types'] ='gif|jpg|png';
+	                $config['file_name'] = $fileName;
+
+	                $this->upload->initialize($config);
+                    if($this->upload->do_upload('photograph')) {
+                    $data = $this->upload->data();
+                    $filepath=$data['file_name'];
+
+                    } else {
+                    $errors = $this->upload->display_errors();
+                            }
+                     if(!empty($errors)){
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+                     redirect('admin/list_of_management/');
+	                               } 
+     	   if($this->Admin_model->save_manager($id,$filepath))
+              { 
+              	if(isset($image_old)){
+                unlink($pathToUpload.$image_old);
+                                     }
+
+            $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved</div>");
+            redirect('admin/list_of_management/');
+            } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+            redirect('admin/list_of_management/');
+            }
+        }
+    }
+
+
+     }else{
+        $data['id']=$id;
+        $data['getManager']=$this->Admin_model->getManager($data['id']);
+		$this->load->view('admin/add_manager',$data);
+	        }
+	}
+
+	function add_community($id='')
+        {
+
+          $this->load->model('Admin_model');
+          if($_POST){
+     	  $id=$this->input->post('id');
+
+            $this->form_validation->set_rules('heading','heading','required');
+  	    	
+
+			   if($this->form_validation->run() == FALSE){ 
+               $data['id']=$id;
+               $data['getCommunity']=$this->Admin_model->getCommunity($data['id']);
+		       $this->load->view('admin/add_community',$data);
+ 
+			   }else{
+
+			   	if($_FILES['photograph']['name']=="")
+	          {
+	        	$filePath="";
+	        	if($this->Admin_model->save_community($id,$filePath))
+	        	{ 
+$this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved </div>");
+redirect('admin/list_of_community/');
+	        	}
+
+	        }else{
+                  
+                   $image_old=$_POST['image_old'];
+               
+     	        $pathToUpload ='assets/uploads/community/';
+  	    	    if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			                                 }
+			        $this->load->library('upload');
+			        $fileName=$_FILES['photograph']['name'];
+            	    $config['upload_path'] = $pathToUpload;
+	                $config['allowed_types'] ='gif|jpg|png';
+	                $config['file_name'] = $fileName;
+
+	                $this->upload->initialize($config);
+                    if($this->upload->do_upload('photograph')) {
+                    $data = $this->upload->data();
+                    $filepath=$data['file_name'];
+
+                    } else {
+                    $errors = $this->upload->display_errors();
+                            }
+                     if(!empty($errors)){
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+                     redirect('admin/list_of_community/');
+	                               } 
+     	   if($this->Admin_model->save_community($id,$filepath))
+              { 
+              	if(isset($image_old)){
+                unlink($pathToUpload.$image_old);
+                                     }
+
+            $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved</div>");
+            redirect('admin/list_of_community/');
+            } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+            redirect('admin/list_of_community/');
+            }
+        }
+    }
+
+
+     }else{
+        $data['id']=$id;
+        $data['getCommunity']=$this->Admin_model->getCommunity($data['id']);
+		$this->load->view('admin/add_community',$data);
+	        }
+	}
+	function add_grievance($id='')
+        {
+
+          $this->load->model('Admin_model');
+          if($_POST){
+     	  $id=$this->input->post('id');
+
+            $this->form_validation->set_rules('content','content','required');
+  	    
+			   if($this->form_validation->run() == FALSE){ 
+               $data['id']=$id;
+               $data['getGrievance']=$this->Admin_model->getGrievance($data['id']);
+		       $this->load->view('admin/add_grievance',$data);
+ 
+			   }else{
+     	   if($this->Admin_model->save_grievance($id,$filepath))
+              { 
+            $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved</div>");
+            redirect('admin/list_of_grievance/');
+            } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+            redirect('admin/list_of_grievance/');
+            }
+       
+    }
+
+
+     }else{
+        $data['id']=$id;
+        $data['getGrievance']=$this->Admin_model->getGrievance($data['id']);
+		$this->load->view('admin/add_grievance',$data);
+	        }
+	}
+	function list_of_directors()
+	{
+		$this->load->model('Admin_model');
+        $data['query1']=$this->Admin_model->getAll_director();
+        $this->load->view('admin/list_of_directors',$data);
+	}
+
+	function list_of_management(){
+        $this->load->model('Admin_model');
+        $data['query1']=$this->Admin_model->getAll_management();
+        $this->load->view('admin/list_of_management',$data);
+	}
+	function list_of_community(){
+        $this->load->model('Admin_model');
+        $data['query1']=$this->Admin_model->getAll_community();
+        $this->load->view('admin/list_of_community',$data);
+	}
+
+	function list_of_grievance(){
+        $this->load->model('Admin_model');
+        $data['query1']=$this->Admin_model->getAll_grievance();
+        $this->load->view('admin/list_of_grievance',$data);
+	}
+	
+
+	function delete_directors($director_id){
+    $pathToUpload ='assets/uploads/directors/';
+    $this->load->model('Admin_model');
+    $data['getDirector']=$this->Admin_model->getDirector($director_id);
+    unlink($pathToUpload.$data['getDirector'][0]['image']);
+
+        if($this->uri->segment(3, 0) != ""){
+		$this->Admin_model->delete_director($this->uri->segment(3, 0));	
+		}
+		redirect("admin/list_of_directors");
+	}
+    function delete_manager($manager_id){
+    $pathToUpload ='assets/uploads/manager/';
+    $this->load->model('Admin_model');
+    $data['getManager']=$this->Admin_model->getManager($manager_id);
+    unlink($pathToUpload.$data['getManager'][0]['image']);
+        if($this->uri->segment(3, 0) != ""){
+		$this->Admin_model->delete_manager($this->uri->segment(3, 0));	
+		}
+		redirect("admin/list_of_management");
+	}
+
+	 function delete_community($community_id){
+    $pathToUpload ='assets/uploads/community/';
+    $this->load->model('Admin_model');
+        $data['getCommunity']=$this->Admin_model->getCommunity($community_id);
+    unlink($pathToUpload.$data['getCommunity'][0]['image']);
+        if($this->uri->segment(3, 0) != ""){
+		$this->Admin_model->delete_community($this->uri->segment(3, 0));	
+		}
+		redirect("admin/list_of_community");
+	}
+
+	function delete_grievance($id){
+    $this->load->model('Admin_model');
+        if($this->uri->segment(3, 0) != ""){
+		$this->Admin_model->delete_grievance($this->uri->segment(3, 0));	
+		}
+		redirect("admin/list_of_grievance");
+	}
+    
+	
+	
 	function getContenttpe(){
 		$cat_id = $this->input->post('cat_id');
 	    $this->db->select('content_type_id');
@@ -404,7 +734,6 @@ function getSubat_content()
 	        }else{
 	           	$cat_id=$this->input->post('cat_id');
      	        $subcat_id=$this->input->post('subcat_id');
-
      	        $pathToUpload ='assets/uploads/page_content/'.$cat_id."_".$subcat_id;
   	    	    if ( ! file_exists($pathToUpload) ) {
 			       $create = mkdir($pathToUpload, 0777, TRUE);
@@ -422,15 +751,14 @@ function getSubat_content()
                     } else {
                     $errors = $this->upload->display_errors();
                             }
-                     if(!empty($errors)) {
+                     if(!empty($errors)){
 	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
                      redirect('admin/manage/');
 	                               } 
                 
 
 	        }
-	          // print_r($filepath);
-           //    exit();
+
 
      	if($this->Admin_model->save_subcontent($id,$filepath))
               { 
@@ -446,7 +774,6 @@ function getSubat_content()
         $data['selected_permissions']=$this->Admin_model->get_selected_permissions($data['dept_id']);
         $data['id']=$id;
         $data['getContent_byid']=$this->Admin_model->getContent_byid($data['id']);
-        //print_r($data['getContent_byid']);
      	$data['all_category']=$this->Admin_model->get_categories();
 		$this->load->view('admin/add_subcatcontent',$data);
 	        }
@@ -949,7 +1276,7 @@ $url=base_url().'assets/uploads/page_content/4_6/'.$data['getContent_byid'][0]['
 	{
 		$this->load->model('Admin_model');
 		if($this->uri->segment(3, 0) != ""){
-			$this->Admin_model->deletesubcat($this->uri->segment(4, 0));	
+		$this->Admin_model->deletesubcat($this->uri->segment(4, 0));	
 		}
 		redirect("admin/subcategories");
 	}

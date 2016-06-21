@@ -61,11 +61,43 @@ class Admin_model extends CI_Model
 			$this->db->where('units_id', $id);
 			$this->db->update('units', $data);
 		}
-		
+
+    function getDirector($id){
+     $this->db->select('*');
+     $this->db->from('list_directors');
+     $this->db->where('director_id',$id);
+     $result = $this->db->get();
+     return $result->result_array();
+
+    }
+		 function getManager($id){
+     $this->db->select('*');
+     $this->db->from('list_management');
+     $this->db->where('manager_id',$id);
+     $result = $this->db->get();
+     return $result->result_array();
+
+    }
+    function getCommunity($id){
+     $this->db->select('*');
+     $this->db->from('list_community');
+     $this->db->where('community_id',$id);
+     $result = $this->db->get();
+     return $result->result_array();
+
+    }
+    function getGrievance($id){
+     $this->db->select('*');
+     $this->db->from('list_grievance');
+     $this->db->where('id',$id);
+     $result = $this->db->get();
+     return $result->result_array();
+
+    }
 		function deleteunit($id)
 		{
 			$this->db->select("*");
-            $this->db->where('units_id',$id);
+      $this->db->where('units_id',$id);
 			$this->db->delete('units');
 			$url = base_url()."admin/unit";
 			header("Location:$url");
@@ -108,12 +140,46 @@ class Admin_model extends CI_Model
     	$result = $this->db->get();
  		return $result->result_array();
 	 }
+
+   function getAll_director()
+   {
+      $this->db->select('*');
+      $this->db->from('list_directors');
+      $result = $this->db->get();
+    return $result->result_array();
+   }
+   function getAll_management()
+   {
+      $this->db->select('*');
+      $this->db->from('list_management');
+      $result = $this->db->get();
+      return $result->result_array();
+   }
+
+   function getAll_community()
+   {
+      $this->db->select('*');
+      $this->db->from('list_community');
+      $result = $this->db->get();
+      return $result->result_array();
+   }
+
+    function getAll_grievance()
+   {
+      $this->db->select('*');
+      $this->db->from('list_grievance');
+      $result = $this->db->get();
+      return $result->result_array();
+   }
+   
+
+   
 	 function getcontent_type()
 	 {
 	    $this->db->select('*');
     	$this->db->from('content_type');
     	$result = $this->db->get();
- 		return $result->result_array();
+ 		  return $result->result_array();
 	 }
 	 
 		function get_permission_list()
@@ -179,7 +245,7 @@ $data = array(
       return false;
     }
 }else{
-  $data = array('permissions_id'=>serialize($ame),             
+  $data = array('permissions_id'=>serialize($ame),            
     );
   $this->db->where('dept_id', $dept_id);
   $this->db->update('set_permission', $data);
@@ -203,8 +269,7 @@ $data = array(
             'content'=>$content, 
             'upload_url'=>$filepath,             
     );
-  // print_r($data);
-  // exit();
+
  if($this->db->insert('subcat_contents', $data))
     {
       return true;
@@ -230,10 +295,197 @@ $data = array(
   
     }
 
+    function save_director($id,$filepath){
+extract($_POST);
+
+  if($id==""){
+  $data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+            'contents'=>$content, 
+            'image'=>$filepath,             
+    );
+
+ if($this->db->insert('list_directors', $data))
+    {
+      return true;
+    } else {
+    }
+
+  }else{//update
+if($filepath==""){
+$data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+            'contents'=>$content, 
+    );
+    }else{
+    $data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+            'contents'=>$content, 
+            'image'=>$filepath,           
+    );
+  }
+    $this->db->where('director_id', $id);
+    $r=$this->db->update('list_directors', $data);
+
+   if($r){
+   return true;
+   }else{
+    return false;
+   }
+  }
+  
+    }
+
+    function save_manager($id,$filepath){
+
+extract($_POST);
+
+  if($id==""){
+  $data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+            'image'=>$filepath,             
+    );
+
+ if($this->db->insert('list_management', $data))
+    {
+      return true;
+    } else {
+    }
+
+  }else{//update
+if($filepath==""){
+$data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+    );
+    }else{
+    $data = array(
+            'name'=>$name,
+            'designation'=>$designation, 
+            'image'=>$filepath,           
+    );
+  }
+    $this->db->where('manager_id', $id);
+    $r=$this->db->update('list_management', $data);
+
+   if($r){
+   return true;
+   }else{
+    return false;
+   }
+  }
+  
+    }
+
+    function save_community($id,$filepath){
+
+extract($_POST);
+ $current=date('Y-m-d');
+
+  if($id==""){
+  $data = array(
+            'heading'=>$heading,
+            'image'=>$filepath,  
+            'created_at'=>$current,
+            'modified_at'=>$current,            
+    );
+
+ if($this->db->insert('list_community', $data))
+    {
+      return true;
+    } else {
+    }
+
+  }else{//update
+if($filepath==""){
+$data = array(
+      'heading'=>$heading,
+      'modified_at'=>$current,            
+
+    );
+    }else{
+    $data = array(
+      'heading'=>$heading,  
+      'image'=>$filepath, 
+      'modified_at'=>$current,            
+            
+       
+    );
+  }
+    $this->db->where('community_id', $id);
+    $r=$this->db->update('list_community', $data);
+
+   if($r){
+   return true;
+   }else{
+    return false;
+   }
+  }
+  
+    }
+
+
+    function save_grievance($id){
+
+extract($_POST);
+ $current=date('Y-m-d');
+
+  if($id==""){
+  $data = array(
+            'content'=>$content,
+            'created_at'=>$current,
+            'modified_at'=>$current,            
+    );
+
+ if($this->db->insert('list_grievance', $data))
+    {
+      return true;
+    } else {
+    }
+
+  }else{//update
+$data = array(
+      'content'=>$content,
+      'modified_at'=>$current,            
+    );
+
+    $this->db->where('id', $id);
+    $r=$this->db->update('list_grievance', $data);
+
+   if($r){
+   return true;
+   }else{
+    return false;
+   }
+  }
+  
+    }
+
     function deletesubcat($id)
 	{
 		$this->db->delete('tbl_categories', array('cat_id' => $id));
 	}
+ function  delete_director($id){
+    $this->db->delete('list_directors', array('director_id' => $id));
+
+  }
+
+  function  delete_manager($id){
+    $this->db->delete('list_management', array('manager_id' => $id));
+
+  }
+  function  delete_community($id){
+    $this->db->delete('list_community', array('community_id' => $id));
+
+  }
+  function  delete_grievance($id){
+    $this->db->delete('list_grievance', array('id' => $id));
+
+  }
      function delete_cat($id)
 	{
 		$this->db->delete('tbl_categories', array('cat_id' => $id));

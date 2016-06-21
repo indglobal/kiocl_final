@@ -258,7 +258,6 @@ class Unit extends CI_Controller
 				header("Location:".  base_url()."unit/tendors");
 			} 
                        
-                   //}
 
 		}
 
@@ -283,109 +282,175 @@ class Unit extends CI_Controller
                $this->load->model('Admin_umodel');
 			 if ($this->input->server('REQUEST_METHOD') === 'POST')
 		       {
-
 			$this->form_validation->set_rules('tendor_code', 'tendor_code', 'required');
 			$this->form_validation->set_rules('corrigendum_code', 'corrigendum_code', 'required');
 			$this->form_validation->set_rules('corrigendum_date', 'corrigendum_date', 'required');
 			$this->form_validation->set_rules('corrigendum_due_date', 'corrigendum_due_date');
 			$this->form_validation->set_rules('corrigendum_due_time', 'corrigendum_due_time');
 
-			
-			
-			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error"><a class="close" data-dismiss="alert">×                                                          </a><strong>', '</strong></div>');
 			
 			
 			if ($this->form_validation->run())
 			{
-				include("lib/imageManipulation.php");
-				include("lib/resize-class.php");
-                      
-				$path=$_FILES['tender_path']['name'];
-				 $type		=	pathinfo($path,PATHINFO_EXTENSION);
-				$img_name	= $_FILES['tender_path']['name'];
-				 if($type=='pdf')
-                                {
-				     $img_name	= $_FILES['tender_path']['name'];
-				     if(empty($path))
-				    {
-				     $big_image 	=	"assets_admin/dist/img/boxed-bg.png";
-				
-				     }
-				      else
-				       {
-				          $big_image 	=	"assets_admin/dist/img/tendor/".$img_name;
-				          copy($_FILES['tender_path']['tmp_name'],$big_image);
-			      
-			    
-				        }
-				}
-				 $email= $this->session->userdata['is_logged_in']['email_address'];
-                       
-			$data['que']=$this->Admin_umodel->getunittendor($email);
-			foreach ($data['que'] as $row)  
-      		         {  
-         	             
-         	             $units_id= $row->units_id; 
-         	             $deparments_id= $row->deparments_id; 
-      		         } 
-      		         
-      		         $tender=$this->input->post('tendor_code');
-      		         
-      		         $data['querr']=$this->Admin_umodel->getutendor($tender,$email);
-			foreach ($data['querr'] as $rows)  
-      		         {  
-         	             $tender_name= $rows->tender_name;
-         	             $tendor_code= $rows->tendor_code; 
-         	             
-      		         } 
-      		         
-      		         
-      		         
-      		          $current=date('Y-m-d');
-			$time6 = date('H:i:s', time());	
-				     $data_to_store = array(
-				    'corrigendum_id' => $this->input->post(''),
-				    'tender_id' => $tender,
-				    'tender_name' => $tender_name,
-				    'tender_path'=>$big_image , 
-				    'corrigendum_code' => $this->input->post('corrigendum_code'),
-				     'tendor_code' => $tendor_code,
-				     'corrigendum_date'=>$this->input->post('corrigendum_date'),
-                                    'corrigendum_due_date'=>$this->input->post('corrigendum_due_date'),
-                                    'corrigendum_due_time'=>$this->input->post('corrigendum_due_time'),
-                                    'corrigendum_status'=>'0',
+				$pathToUpload ='assets/uploads/corrigendum/';
 
-				   'date'=>$current,
-                                   'time'=>$time6,
-				'units_id' => $units_id,
-				   'deparments_id' => $deparments_id,
-				   'username' => $email,
-				   
-					  );
-				$this->load->model('Admin_umodel');
-				
-				if($this->Admin_umodel->store_corrigendum($data_to_store))
-				{
-					$data['flash_message'] = TRUE;
-				}
-				else
-				{
-					$data['flash_message'] = FALSE;
-				}
-				$tender=$this->input->post('tendor_code');
-				$this->Admin_umodel->update_ten($tender);
-				header("Location:".  base_url()."unit/corrigendum");
+  	    	if ( ! file_exists($pathToUpload) ) {
+			       $create = mkdir($pathToUpload, 0777, TRUE);
+			  }
+			   $this->load->library('upload');
+			    $fileName=$_FILES['tender_path']['name'];
+            	$config['upload_path'] = $pathToUpload;
+	            $config['allowed_types'] ='pdf';
+	            $config['file_name'] = $fileName;
+                   
+
+	             $this->upload->initialize($config);
+                if ($this->upload->do_upload('tender_path')) {
+                    $data = $this->upload->data();
+
+                } else {
+                    $errors = $this->upload->display_errors();
+                }
+
+                 if(!empty($errors)) {
+	            	$this->session->set_flashdata('message', '<div class="alert alert-danger">'.$errors.'</div>');
+	            	redirect(site_url('unit/addcorrigendum'));
+	                } else {
+	            	$filePath =$data['file_name'];
+	            
+
+  	    	      if($this->Admin_umodel->store_corrigendum($filePath)){ 
+		 	        $this->session->set_flashdata('message',"<div class='alert alert-success'>Successfully Saved </div>");
+			 	        redirect('unit/addcorrigendum');
+				               }else{
+						$this->session->set_flashdata('message', '<div class="alert alert-error">Some error occured during Insertion.</div>');
+						redirect('unit/addcorrigendum');
+		 		                }
+
+  	                        }
+
+    
 			}
 		}
 
 		 $email= $this->session->userdata['is_logged_in']['email_address'];
-               
+         
 		  $data['query']=$this->Admin_umodel->gettender($email);
-                  
 		  $data['query1']=$this->Admin_umodel->getunittendor($email);
-               $this->load->view('units/add_corrigendum',$data);
+          $this->load->view('units/add_corrigendum',$data);
 	}
+     
+
+
+
+ //     function addcorrigendum()
+ //        {
+ //               $this->load->model('Admin_umodel');
+	// 		 if ($this->input->server('REQUEST_METHOD') === 'POST')
+	// 	       {
+
+	// 		$this->form_validation->set_rules('tendor_code', 'tendor_code', 'required');
+	// 		$this->form_validation->set_rules('corrigendum_code', 'corrigendum_code', 'required');
+	// 		$this->form_validation->set_rules('corrigendum_date', 'corrigendum_date', 'required');
+	// 		$this->form_validation->set_rules('corrigendum_due_date', 'corrigendum_due_date');
+	// 		$this->form_validation->set_rules('corrigendum_due_time', 'corrigendum_due_time');
+
+			
+			
+			
+	// 		$this->form_validation->set_error_delimiters('<div class="alert alert-error"><a class="close" data-dismiss="alert">×                                                          </a><strong>', '</strong></div>');
+			
+			
+	// 		if ($this->form_validation->run())
+	// 		{
+	// 			include("lib/imageManipulation.php");
+	// 			include("lib/resize-class.php");
+                      
+	// 			$path=$_FILES['tender_path']['name'];
+	// 			 $type		=	pathinfo($path,PATHINFO_EXTENSION);
+	// 			$img_name	= $_FILES['tender_path']['name'];
+	// 			 if($type=='pdf')
+ //                                {
+	// 			     $img_name	= $_FILES['tender_path']['name'];
+	// 			     if(empty($path))
+	// 			    {
+	// 			     $big_image 	=	"assets_admin/dist/img/boxed-bg.png";
+				
+	// 			     }
+	// 			      else
+	// 			       {
+	// 			          $big_image 	=	"assets_admin/dist/img/tendor/".$img_name;
+	// 			          copy($_FILES['tender_path']['tmp_name'],$big_image);
+			      
+			    
+	// 			        }
+	// 			}
+	// 			 $email= $this->session->userdata['is_logged_in']['email_address'];
+                       
+	// 		$data['que']=$this->Admin_umodel->getunittendor($email);
+	// 		foreach ($data['que'] as $row)  
+ //      		         {  
+         	             
+ //         	             $units_id= $row->units_id; 
+ //         	             $deparments_id= $row->deparments_id; 
+ //      		         } 
+      		         
+ //      		         $tender=$this->input->post('tendor_code');
+      		         
+ //      		         $data['querr']=$this->Admin_umodel->getutendor($tender,$email);
+	// 		foreach ($data['querr'] as $rows)  
+ //      		         {  
+ //         	             $tender_name= $rows->tender_name;
+ //         	             $tendor_code= $rows->tendor_code; 
+         	             
+ //      		         } 
+      		         
+      		         
+      		         
+ //      		          $current=date('Y-m-d');
+	// 		$time6 = date('H:i:s', time());	
+	// 			     $data_to_store = array(
+	// 			    'corrigendum_id' => $this->input->post(''),
+	// 			    'tender_id' => $tender,
+	// 			    'tender_name' => $tender_name,
+	// 			    'tender_path'=>$big_image , 
+	// 			    'corrigendum_code' => $this->input->post('corrigendum_code'),
+	// 			     'tendor_code' => $tendor_code,
+	// 			     'corrigendum_date'=>$this->input->post('corrigendum_date'),
+ //                                    'corrigendum_due_date'=>$this->input->post('corrigendum_due_date'),
+ //                                    'corrigendum_due_time'=>$this->input->post('corrigendum_due_time'),
+ //                                    'corrigendum_status'=>'0',
+
+	// 			   'date'=>$current,
+ //                   'time'=>$time6,
+	// 			'units_id' => $units_id,
+	// 			   'deparments_id' => $deparments_id,
+	// 			   'username' => $email,
+				   
+	// 				  );
+	// 			$this->load->model('Admin_umodel');
+				
+	// 			if($this->Admin_umodel->store_corrigendum($data_to_store))
+	// 			{
+	// 				$data['flash_message'] = TRUE;
+	// 			}
+	// 			else
+	// 			{
+	// 				$data['flash_message'] = FALSE;
+	// 			}
+	// 			$tender=$this->input->post('tendor_code');
+	// 			$this->Admin_umodel->update_ten($tender);
+	// 			header("Location:".  base_url()."unit/corrigendum");
+	// 		}
+	// 	}
+
+	// 	 $email= $this->session->userdata['is_logged_in']['email_address'];
+	// 	 $data['query']=$this->Admin_umodel->gettender($email);   
+	// 	 $data['query1']=$this->Admin_umodel->getunittendor($email);
+ //         $this->load->view('units/add_corrigendum',$data);
+	// }
+	
 	
         function canel_corg()
 	{

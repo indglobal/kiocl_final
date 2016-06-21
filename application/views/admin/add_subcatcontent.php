@@ -88,13 +88,11 @@ $url="";
                    </div>
 
          <div class="form-group">
-          <label id="label">Submenu:*</label>
+         <label id="label">Submenu:*</label>
           <select name="subcat_id" id="subcat" class="form-control" style="width:200px;">>
                         
          <option value="<?php if(!empty($getContent_byid)){echo $getContent_byid[0]['subcat_id'];}?>" selected><?php if(!empty($getContent_byid)){echo getCategoryname_byid($getContent_byid[0]['subcat_id']);}?>
          </option> 
-
-
          </select>
          <?php echo form_error('subcat', '<div class="error" style="color:red;">', '</div>');?> 
 

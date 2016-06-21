@@ -112,11 +112,45 @@ Where t.tender_id='$tender' and t.username='$email' ");
    
 		}
 		
-		function store_corrigendum($data)
-		{
-			$insert = $this->db->insert('corrigendum', $data);
-			return $insert;
+		// function store_corrigendum($data)
+		// {
+		// 	$insert = $this->db->insert('corrigendum', $data);
+		// 	return $insert;
 			
+		// }
+
+		function store_corrigendum($filePath){
+			extract($_POST);
+       $email= $this->session->userdata['is_logged_in']['email_address'];
+      		           $current=date('Y-m-d');
+			$time6 = date('H:i:s', time());	
+				     $data_to_store = array(
+				    'corrigendum_id' => $this->input->post(''),
+				    'tender_id' => $tender_id,
+				    'tender_name' => $tender_name,
+				    'tender_path'=>$filePath , 
+				    'corrigendum_code' => $this->input->post('corrigendum_code'),
+				    'tendor_code' => $tendor_code,
+				    'corrigendum_date'=>$this->input->post('corrigendum_date'),
+                    'corrigendum_due_date'=>$this->input->post('corrigendum_due_date'),
+                    'corrigendum_due_time'=>$this->input->post('corrigendum_due_time'),
+                    'corrigendum_status'=>'0',
+
+				   'date'=>$current,
+                   'time'=>$time6,
+				   'units_id' => $units_id,
+				   'deparments_id' => $dept_id,
+				   'username' => $email,
+				   
+					  );
+        
+      // print_r($data_to_store);
+      // exit();
+        if($this->db->insert('corrigendum', $data_to_store)){
+            return true;
+        } else {
+            return false;
+        }
 		}
 		
 		function update_ten($tendor)
